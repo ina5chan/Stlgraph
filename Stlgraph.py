@@ -60,5 +60,37 @@ if uploaded_file is not None:
         #     scaleanchor="x",  # x軸を基準に拡大縮小
         #     scaleratio=1,  # 拡大縮小比率
         # )
-
         st.plotly_chart(fig)
+
+        for column in selected_columns:
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=df.index, y=df[column], mode='lines', name=column))
+            
+            # グラフのレイアウトを設定
+            fig.update_layout(
+                xaxis=dict(
+                    rangeselector=dict(
+                        buttons=list([
+                            dict(count=1, label="1d", step="day",
+                                stepmode="backward"),
+                            dict(count=7, label="1w", step="day",
+                                stepmode="backward"),
+                            dict(count=1, label="1m", step="month",
+                                stepmode="backward"),
+                            dict(count=3, label="3m", step="month",
+                                stepmode="backward"),
+                            dict(step="all")
+                        ])
+                    ),
+                    # rangeslider=dict(visible=True),
+                ),
+                yaxis=dict(
+                    fixedrange=False,  # 縦に拡大縮小を有効にする
+                )
+            )
+
+            st.write(column)  # 列の名前を表示
+            st.plotly_chart(fig)
+
+st.write("© 2023 T.Inagawa")
